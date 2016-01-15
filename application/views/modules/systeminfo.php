@@ -38,6 +38,23 @@
 						</table>
 					</div>
 				</div>
+				<div class="panel" id="spy7">
+					<div class="panel-body pn">
+						<table class="table table-bordered">
+							<tr>
+								<th width="50">#</th>
+								<th>Installed Features / Bug Fixes</th>
+							</tr>
+							<?php $calt = 0; foreach($addon0 as $addon1) {
+								$calt++;
+								echo '<tr>';
+								echo '<td>'.$calt.'</td>';
+								echo '<td>'.$addon1['description'].'</td>';
+								echo '</tr>';
+							}?>
+						</table>
+					</div>
+				</div>
             </section>
             <!-- End: Content -->
 
