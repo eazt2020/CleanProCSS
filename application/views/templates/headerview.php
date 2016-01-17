@@ -28,6 +28,9 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('vendor/plugins/datepicker/css/bootstrap-datetimepicker.min.css');?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('vendor/plugins/daterange/daterangepicker.css');?>">
 
+	<!--select2 CSS-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('vendor/plugins/select2/css/core.css');?>">
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo base_url('assets/img/favicon.ico'); ?>">
 	<script language="JavaScript" src="<?php echo base_url("assets/js/chkall.js");?>"></script>

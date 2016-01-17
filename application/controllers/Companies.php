@@ -23,8 +23,11 @@ class Companies extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$company0 = $this->db->query('SELECT comp.id AS id,comp.name AS name,comp.contact AS contact,comp.primeAdd AS primeAdd,comp.secondAdd AS secondAdd,comp.city AS city,stat.name AS state,comp.postcode AS postcode FROM companies AS comp INNER JOIN config_state AS stat ON comp.state = stat.id');
 			$state000 = $this->db->query("SELECT * FROM config_state");
+			
+			
 			$this->db->trans_complete();
 			
 			$version0 = $version0->row();
@@ -39,6 +42,7 @@ class Companies extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">Companies</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -177,6 +181,7 @@ class Companies extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$query3 = $this->db->query("SELECT comp.id AS id, comp.name AS name, comp.regNo AS regNo, comp.contact AS contact, comp.primeAdd as primeAdd, comp.secondAdd AS secondAdd, comp.city AS city, stat.name AS state, comp.postcode AS postcode FROM companies AS comp INNER JOIN config_state AS stat ON comp.state = stat.id WHERE comp.id =?",array($_GET['id']));
 			$query4 = $this->db->query("SELECT p1.id AS id,p1.compId AS compId,p1.name AS name,p1.contact AS contact,p1.primeAdd AS primeAdd,p1.secondAdd AS secondAdd,p1.city AS city,p2.name AS state,p1.postcode AS postcode FROM outlets AS p1 INNER JOIN config_state AS p2 ON p1.state = p2.id WHERE p1.compId =?",array($_GET['id']));
 			$query5 = $this->db->query("select p1.id AS id,p1.name AS name,p1.outletId AS outletId,p1.compId AS compId,p3.type AS type,p2.status AS status from machines AS p1 INNER JOIN config_machine_status AS p2 ON p1.status = p2.id  INNER JOIN config_machine_type AS p3 ON p1.type = p3.id  WHERE p1.compId=?",array($_GET['id']));
@@ -201,6 +206,7 @@ class Companies extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-link"><a href="'.base_url('companies').'">Companies</a></li><li class="crumb-trail">'.strtoupper($attr['company']).'</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);

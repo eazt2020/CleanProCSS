@@ -23,6 +23,7 @@ class Users extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$sysuser0 = $this->db->query("SELECT p1.id AS id,p1.username AS username,p1.name AS name,p1.email AS email,p1.status AS status FROM identities AS p1;");
 			$usrole00 = $this->db->query("SELECT p1.id AS id,p1.name AS name FROM roles AS p1;");
 			$this->db->trans_complete();
@@ -41,7 +42,7 @@ class Users extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
-			$attr['sdbarmen'] = 'menu-open';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">System Settings</li><li class="crumb-trail">Users Settings</li><li class="crumb-trail">System Users</li>';
 
 			$data['headervw'] = $this->load->view('templates/headerview',	$attr, true);
@@ -197,6 +198,7 @@ class Users extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$sysusr00 = $this->db->query("SELECT p1.id AS id,p1.name AS name,p1.username AS username,p1.email AS email,p1.status AS status,p2.secret AS secret,p2.role AS role,p3.name AS roleName,p2.encrypt AS encrypt FROM identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id WHERE p1.id =?",array($_GET['id']));
 			$usrole00 = $this->db->query("SELECT p1.id AS id,p1.name AS name FROM roles AS p1;");
 			$this->db->trans_complete();
@@ -219,7 +221,7 @@ class Users extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
-			$attr['sdbarmen'] = 'menu-open';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">System Settings</li><li class="crumb-trail">Users Settings</li><li class="crumb-link"><a href="'.base_url('users').'">System Users</a></li><li class="crumb-trail">'.strtoupper($attr['sysusr01']).'</li>';
 
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -233,40 +235,5 @@ class Users extends MY_Controller {
 			$this->session->set_flashdata('message', $errcode0);
 			redirect('dashboard');
 		}
-	}
-	
-	public function dmz()
-	{
-		$this->db->trans_start();
-		$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
-		$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
-		$sysusr00 = $this->db->query("SELECT p1.id AS id,p1.name AS name,p1.username AS username,p1.email AS email,p1.status AS status,p2.secret AS secret,p2.role AS role,p3.name AS roleName,p2.encrypt AS encrypt FROM identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id WHERE p1.id =?",array($_GET['id']));
-		$usrole00 = $this->db->query("SELECT p1.id AS id,p1.name AS name FROM roles AS p1;");
-		$this->db->trans_complete();
-		
-		$version0 = $version0->row();
-		$header00 = $header00->row();
-		$sysusr01 = $sysusr00->row();
-		
-		//page arrays
-		$attr['sysusr01'] = $sysusr01->name;
-		$attr['sysusr00'] = $sysusr00->result_array();
-		$attr['usrole00'] = $usrole00->result_array();
-		
-		$data['sysusr01'] = $sysusr01->name;
-		
-		//global arrays
-		$attr['version0'] = $version0->value;
-		$attr['header00'] = $header00->value;
-		$attr['flashmsg'] = $this->session->flashdata('message');
-		$attr['screenid'] = $screenid;
-		$attr['sdbaract'] = 'class="active"';
-		$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">System Settings</li><li class="crumb-trail">Users Settings</li><li class="crumb-link"><a href="'.base_url('users').'">System Users</a></li><li class="crumb-trail">'.strtoupper($attr['sysusr01']).'</li>';
-		
-		$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
-		$data['sidebrvw'] = $this->load->view('templates/sideview',$attr, true);
-		$data['contntvw'] = $this->load->view('modules/userdetailsview',$attr, true);
-		
-		$this->load->view('parserview', $data);	
 	}
 }

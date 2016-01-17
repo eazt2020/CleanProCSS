@@ -7,7 +7,7 @@ class Systeminfo extends MY_Controller {
 	public function index()
 	{
 		$powerval = 'r';
-		$screenid = '1.1.0';
+		$screenid = '3.1.0';
 		$scrncast = '3.1.0';
 		$userid00 = $this->session->uid;
 
@@ -25,6 +25,7 @@ class Systeminfo extends MY_Controller {
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
 			$builid = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1004));
 			$core00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1002));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$addon0 = $this->db->query("SELECT * FROM config_system_kb;");
 			$this->db->trans_complete();
 			
@@ -42,6 +43,7 @@ class Systeminfo extends MY_Controller {
 			$attr['flashmsg'] = $this->session->flashdata('message');
 			$attr['screenid'] = $scrncast;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">Tickets</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);

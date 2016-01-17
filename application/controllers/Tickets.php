@@ -24,8 +24,10 @@ class Tickets extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$tickets = $this->db->query('SELECT p1.id AS id,p1.compId AS compId,p4.name AS compName,p1.outletId AS outletId,p5.name AS outletName,p1.machId AS machId,p6.id AS machName,p1.crDate AS crDate,p1.name AS name,p1.contact AS contact,p1.callType AS callType,p3.name AS callTypeName,p1.error AS error,p7.name AS errorName,p1.status AS status,p2.name AS statusName,p1.amount AS amount,p1.remark AS remark,p1.bankAc AS bankAc,p1.ref AS ref FROM tickets AS p1 INNER JOIN config_ticket_status AS p2 ON p1.status = p2.id INNER JOIN config_call_type AS p3 ON p1.callType = p3.id INNER JOIN companies AS p4 ON p1.compId = p4.id INNER JOIN outlets AS p5 ON p1.outletId = p5.id INNER JOIN machines AS p6 ON p1.machId = p6.id INNER JOIN config_machine_error AS p7 ON p1.error = p7.id');
 			$companies = $this->db->query("SELECT id,name FROM companies");
+			$outlets00 = $this->db->query("SELECT id,name FROM outlets");
 			$macherror = $this->db->query("SELECT id,name FROM config_machine_error");
 			$calltype0 = $this->db->query("SELECT id,name FROM config_call_type");
 			$ticstatus = $this->db->query("SELECT id,name FROM config_ticket_status");
@@ -36,6 +38,7 @@ class Tickets extends MY_Controller {
 			
 			$attr['tickets'] = $tickets->result_array();
 			$attr['companies'] = $companies->result_array();
+			$attr['outlets00'] = $outlets00->result_array();
 			$attr['errorcode'] = $macherror->result_array();
 			$attr['calltype0'] = $calltype0->result_array();
 			$attr['ticstatus'] = $ticstatus->result_array();
@@ -46,6 +49,7 @@ class Tickets extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">Tickets</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -188,6 +192,7 @@ class Tickets extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$tickets = $this->db->query('SELECT p1.id AS id,p1.compId AS compId,p4.name AS compName,p1.outletId AS outletId,p5.name AS outletName,p1.machId AS machId,p6.name AS machName,p1.crDate AS crDate,p1.name AS name,p1.contact AS contact,p1.callType AS callType,p3.name AS callTypeName,p1.error AS error,p7.name AS errorName,p1.status AS status,p2.name AS statusName,p1.amount AS amount,p1.remark AS remark,p1.bankAc AS bankAc,p1.ref AS ref,p1.refund AS refund,p1.pic AS pic FROM tickets AS p1 INNER JOIN config_ticket_status AS p2 ON p1.status = p2.id INNER JOIN config_call_type AS p3 ON p1.callType = p3.id INNER JOIN companies AS p4 ON p1.compId = p4.id INNER JOIN outlets AS p5 ON p1.outletId = p5.id INNER JOIN machines AS p6 ON p1.machId = p6.id INNER JOIN config_machine_error AS p7 ON p1.error = p7.id WHERE p1.id =?',array($_GET['id']));
 			$macherror = $this->db->query("SELECT id,name FROM config_machine_error");
 			$calltype0 = $this->db->query("SELECT id,name FROM config_call_type");
@@ -210,6 +215,7 @@ class Tickets extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-link"><a href="'.base_url('tickets').'">Tickets</a></li><li class="crumb-trail">Ticket ID #'.$attr['customn'].'</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -225,26 +231,6 @@ class Tickets extends MY_Controller {
 		}
 	}
 	
-	//Begin outletdropdown dynamic dropdown
-	public function outletdropdown()
-	{
-		if($_GET['choice'] != 0){
-			$this->db->trans_start();
-			$query = $this->db->query('SELECT id,name FROM outlets WHERE compId =?',array($_GET['choice']));
-			$this->db->trans_complete();
-			$outlets = $query->result_array();
-		
-			$calt = 0;
-			
-			foreach($outlets as $row) {$calt++;echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';}
-			echo '<option selected value="default">Choose Outlet from list ('.$calt.' found)</option>';
-		}
-		else{echo '<option value="default">Choose a Company first..</option>';}
-	}
-	//End outletdropdown dynamic dropdown
-	
-	
-	//Begin outletdropdown dynamic dropdown
 	public function machinedropdown()
 	{
 		$this->db->trans_start();
@@ -256,5 +242,16 @@ class Tickets extends MY_Controller {
 		
 		foreach($machines as $row) {$calt++;echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';}
 		echo '<option selected value="default">Choose machine from list ('.$calt.' found)</option>';
+	}
+	
+	public function companydropdown()
+	{
+		$this->db->trans_start();
+		$query = $this->db->query('SELECT id,name FROM companies WHERE id = (SELECT compId FROM outlets WHERE id =?);',array($_GET['choice']));
+		$this->db->trans_complete();
+		$machines = $query->result_array();
+
+		$calt = 0;
+		foreach($machines as $row) {$calt++;echo '<option selected value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';}
 	}
 }

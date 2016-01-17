@@ -23,6 +23,7 @@ class Machines extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$machines = $this->db->query("SELECT p1.id AS id,p1.machNo AS machNo,p1.name AS name,p1.outletId AS outletId,p1.compId AS compId,p4.name AS compName,p5.name AS outletName ,p3.type AS type,p3.imageName AS imageName,p2.status AS status from machines AS p1 INNER JOIN config_machine_status AS p2 ON p1.status = p2.id  INNER JOIN config_machine_type AS p3 ON p1.type = p3.id INNER JOIN companies AS p4 ON p4.id = p1.compId INNER JOIN outlets AS p5 ON p1.outletId = p5.id");
 			$compan00 = $this->db->query("SELECT p1.id AS id,p1.name AS name FROM companies AS p1");
 			$mactyp00 = $this->db->query("SELECT p1.id AS id,p1.type AS type FROM config_machine_type AS p1;");
@@ -43,6 +44,7 @@ class Machines extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">Machines</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -171,6 +173,7 @@ class Machines extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$machines = $this->db->query("select p1.id AS id,p1.machNo AS machNo,p1.name AS name,p3.imageName AS imageName,p4.name AS compName, p5.name AS outletName, p1.outletId AS outletId,p1.compId AS compId,p3.type AS type,p1.type AS typeId,p2.status AS status ,p1.status AS statusId from machines AS p1 INNER JOIN config_machine_status AS p2 ON p1.status = p2.id  INNER JOIN config_machine_type AS p3 ON p1.type = p3.id  INNER JOIN companies AS p4 ON p1.compId = p4.id INNER JOIN outlets AS p5 ON p1.outletId = p5.id WHERE p1.id=?",array($_GET['id']));
 			$ticket00 = $this->db->query("SELECT p1.id AS id,p1.compId AS compId,p1.outletId AS outletId,p1.machId AS machId,p1.name AS name,p1.contact As contact,p1.callType AS callType,p2.name AS error,p1.status AS status FROM tickets AS p1 INNER JOIN config_machine_error AS p2 ON p1.error = p2.id WHERE p1.outletId =?",array($_GET['id']));
 			$mactyp00 = $this->db->query("SELECT p1.id AS id,p1.type AS type FROM config_machine_type AS p1;");
@@ -194,6 +197,7 @@ class Machines extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-link"><a href="'.base_url('machines').'">Machines</a></li><li class="crumb-trail">'.strtoupper($attr['machnam0']).'</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -208,60 +212,7 @@ class Machines extends MY_Controller {
 			redirect('dashboard');
 		}
 	}
-	
-	public function edit()
-	{
-		$powerval = 'c';
-		$screenid = '1.3.0';
-		$userid00 = $this->session->uid;
 
-		$this->db->trans_start();
-		$matchp00 = $this->db->query("SELECT p4.value AS priv from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.screen = ?",array($userid00,$screenid));
-		$this->db->trans_complete();
-
-		$matchp01 = $matchp00->row();
-
-		if($matchp00->num_rows() > 0){$powermat = $matchp01->priv;}else{$powermat = 'x';}
-
-		if (strpos($powermat,$powerval) !== false) {
-			$this->db->trans_start();
-			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
-			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
-			$query3 = $this->db->query("select p1.id AS id,p1.name AS name,p4.name AS compName, p5.name AS outletName, p1.outletId AS outletId,p1.compId AS compId,p3.type AS type,p2.status AS status from machines AS p1 INNER JOIN config_machine_status AS p2 ON p1.status = p2.id  INNER JOIN config_machine_type AS p3 ON p1.type = p3.id  INNER JOIN companies AS p4 ON p1.compId = p4.id INNER JOIN outlets AS p5 ON p1.outletId = p5.id WHERE p1.id=?",array($_GET['id']));
-			$query4 = $this->db->query("SELECT id,type FROM config_machine_type");
-			$query5 = $this->db->query("SELECT id,status FROM config_machine_status");
-			$this->db->trans_complete();
-			
-			$version0 = $version0->row();
-			$header00 = $header00->row();
-			$row3 = $query3->row();
-			
-			$attr['machine'] = $row3->name;
-			$attr['details'] = $query3->result_array();
-			$attr['type'] = $query4->result_array();
-			$attr['status'] = $query5->result_array();
-			
-			$attr['version0'] = $version0->value;
-			$attr['header00'] = $header00->value;
-			$attr['flashmsg'] = $this->session->flashdata('message');
-			$attr['screenid'] = $screenid;
-			$attr['sdbaract'] = 'class="active"';
-			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-link"><a href="'.base_url('machines').'">Machines</a></li><li class="crumb-link"><a href="'.base_url('machines/details?id='.$_GET['id']).'">'.strtoupper($attr['machine']).'</a></li><li class="crumb-trail">Update Details</li>';
-			
-			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
-			$data['sidebrvw'] = $this->load->view('templates/sideview',$attr, true);
-			$data['contntvw'] = $this->load->view('modules/machineeditview',$attr, true);
-			
-			$this->load->view('parserview', $data);	
-		}
-		else {
-			$errcode0 = '<div class="col-md-12"><div class="alert alert-success dark alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>You do not have enough privilege to view the screen</div></div>';
-			$this->session->set_flashdata('message', $errcode0);
-			redirect('dashboard');
-		}
-	}
-	
-	//Begin wizardmachinesingle dynamic dropdown
 	public function machinedropdown()
 	{
 		$this->db->trans_start();
@@ -271,13 +222,10 @@ class Machines extends MY_Controller {
 	
 		$calt = 0;
 		
-		
 		foreach($outlets as $row) {
 			$calt++;
 			echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';
 		}
-		
 		echo '<option selected value="default">Choose Outlet from list ('.$calt.' found)</option>';
 	}
-	//End wizardmachinesingle dynamic dropdown
 }
