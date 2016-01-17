@@ -23,6 +23,7 @@ class Outlets extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$outlet00 = $this->db->query("SELECT p1.id AS id,p1.compId AS compId,p1.name AS name,p1.contact AS contact,p1.primeAdd AS primeAdd,p1.secondAdd AS secondAdd,p1.city AS city,p2.name AS state,p1.postcode AS postcode FROM outlets AS p1 INNER JOIN config_state AS p2 ON p1.state = p2.id");
 			$facili00 = $this->db->query("SELECT p1.outletId AS outletId,p1.type AS type, p2.type AS typeName,p2.imageName AS imageName FROM machines AS p1 INNER JOIN config_machine_type AS p2 ON p1.type = p2.id GROUP BY p1.type,p1.outletId;");
 			$company0 = $this->db->query("SELECT id,name FROM companies");
@@ -43,6 +44,7 @@ class Outlets extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">Outlets</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -203,6 +205,7 @@ class Outlets extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$outlet00 = $this->db->query("SELECT p1.id AS id,p1.compId AS compId, p3.name AS compName, p1.name AS name,p1.contact AS contact,p1.primeAdd AS primeAdd,p1.secondAdd AS secondAdd,p1.city AS city,p2.name AS state,p1.postcode AS postcode FROM outlets AS p1 INNER JOIN config_state AS p2 ON p1.state = p2.id INNER JOIN companies AS p3 ON p1.compId = p3.id WHERE p1.id =?",array($_GET['id']));
 			$machi000 = $this->db->query("select p1.id AS id,p1.name AS name,p1.outletId AS outletId,p1.compId AS compId,p3.type AS type,p2.status AS status from machines AS p1 INNER JOIN config_machine_status AS p2 ON p1.status = p2.id  INNER JOIN config_machine_type AS p3 ON p1.type = p3.id  WHERE p1.outletId=?",array($_GET['id']));
 			$ticket00 = $this->db->query("SELECT p1.id AS id,p1.compId AS compId,p1.outletId AS outletId,p1.machId AS machId,p1.name AS name,p1.contact As contact,p1.callType AS callType,p2.name AS error,p1.status AS status FROM tickets AS p1 INNER JOIN config_machine_error AS p2 ON p1.error = p2.id WHERE p1.outletId =?",array($_GET['id']));
@@ -227,6 +230,7 @@ class Outlets extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-link"><a href="'.base_url('outlets').'">Outlets</a></li><li class="crumb-trail">'.strtoupper($attr['outlet01']).'</li>';
 			
 			$data['headervw'] =  $this->load->view('templates/headerview',$attr, true);

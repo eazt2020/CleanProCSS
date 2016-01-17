@@ -23,6 +23,7 @@ class Notifications extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$notify00 = $this->db->query("SELECT p1.id,p1.name,p1.valid,p2.name AS sev FROM config_notification AS p1 INNER JOIN config_system_alert AS p2 ON p1.sev = p2.id;");
 			$severity = $this->db->query("SELECT id,name FROM config_system_alert;");
 			$this->db->trans_complete();
@@ -41,6 +42,7 @@ class Notifications extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">System Settings</li><li class="crumb-trail">Notifications</li>';
 
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -178,6 +180,7 @@ class Notifications extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$notify00 = $this->db->query("SELECT p1.id,p1.name,p1.valid,p1.sev AS sev,p2.name AS sevName,p1.description FROM config_notification AS p1 INNER JOIN config_system_alert AS p2 ON p1.sev = p2.id WHERE p1.id =?",array($_GET['id']));
 			$severity = $this->db->query("SELECT id,name FROM config_system_alert;");
 			$this->db->trans_complete();
@@ -199,6 +202,7 @@ class Notifications extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">System Settings</li><li class="crumb-link"><a href="'.base_url('notifications').'">Notifications</a></li><li class="crumb-trail">'.strtoupper($attr['notify01']).'</li>';
 
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);

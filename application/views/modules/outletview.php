@@ -89,16 +89,13 @@
 								<div class="row">
 									<div class="col-md-4">
 										<div class="section">
-											<label for="compId" class="field select">
-												<select id="compId" name="compId">
-													<option value="default">Choose a Company...</option>
-													<?php $calt = 0; foreach($company0 as $company1) {
-														$calt++;
-														echo '<option value="'.$company1['id'].'">#'.$company1['id'].'| '.ucwords($company1['name']).'</option>';
-													}?>
-												</select>
-												<i class="arrow"></i>
-											</label>
+											<select id="compId" name="compId" class="select2-company">
+												<option value="default">Choose a Company...</option>
+												<?php $calt = 0; foreach($company0 as $company1) {
+													$calt++;
+													echo '<option value="'.$company1['id'].'">#'.$company1['id'].'| '.ucwords($company1['name']).'</option>';
+												}?>
+											</select>
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -208,6 +205,9 @@
 	
 	<!-- Validation -->
 	<script type="text/javascript" src="<?php echo base_url('assets/admin-tools/admin-forms/js/jquery.validate.min.js'); ?>"></script>
+	
+	<!-- Select2 plugin -->
+	<script src="<?php echo base_url('vendor/plugins/select2/select2.min.js'); ?>"></script>
 
 
     <!-- Theme Javascript -->
@@ -220,6 +220,11 @@
 
             // Init Theme Core    
             Core.init();
+			
+			// Init Select2 - Basic Single
+			$(".select2-company").select2({
+				width: "100%"
+			});
 
             // Init tray navigation smooth scroll
             $('.tray-nav a').smoothScroll({
@@ -275,6 +280,7 @@
 						beforeOpen: function(e) {
 							var Animation = $("#animation-outlet").find('.active-animation').attr('data-effect');
 							this.st.mainClass = Animation;
+							this.wrap.removeAttr('tabindex');
 						}
 					},
 					midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.

@@ -25,7 +25,7 @@ class Faq extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
-			$this->db->trans_start();
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$faqscr00 = $this->db->query("SELECT p1.id,p1.name FROM config_system_faq AS p1");
 			$this->db->trans_complete();
 		
@@ -40,6 +40,7 @@ class Faq extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">System Settings</li><li class="crumb-trail">FAQ Screen Settings</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
@@ -86,7 +87,7 @@ class Faq extends MY_Controller {
 			$this->db->trans_start();
 			$version0 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1001));
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
-			$this->db->trans_start();
+			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$faqscr00 = $this->db->query("SELECT p1.id AS id,p1.name AS name,p1.content AS content FROM config_system_faq AS p1 WHERE p1.id=?",array($_GET['id']));
 			$this->db->trans_complete();
 		
@@ -103,6 +104,7 @@ class Faq extends MY_Controller {
 			$attr['screenid'] = $screenid;
 			$attr['faqscrid'] = $faqscrid;
 			$attr['sdbaract'] = 'class="active"';
+			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">System Settings</li><li class="crumb-link"><a href="'.base_url('faq').'">FAQ Screen Settings</a></li><li class="crumb-trail">'.strtoupper($attr['faqscr01']).'</li>';
 			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);

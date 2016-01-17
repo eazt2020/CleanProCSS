@@ -32,7 +32,7 @@
 					</button>
 				</div>
 				<div class="col-md-2">
-					<button type="submit" class="btn btn-danger br2 btn-sm btn-block" form="rmcomp" value="Submit">
+					<button type="submit" class="btn btn-danger br2 btn-sm btn-block" form="rmticket" value="Submit">
 						<i class="glyphicons glyphicons-circle_minus hidden-lg"></i>
 						<span class="hidden-xs">Delete Selected</span>
 					</button>
@@ -84,27 +84,25 @@
 						<div class="admin-form">
 							<?php $form_attributes = array('method' => 'POST','id' => 'ticket-form'); echo form_open('tickets/validate',$form_attributes); ?>
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-12">
+										<div style="display: none;">
+											<select name="compId" id="compId" class="select2-machine">
+												<option value="default">Choose Outlet first...</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
 										<div class="section">
-											<label for="compId" class="field select">
-												<select name="compId" id="compId">
-													<option value="default">Choose Company...</option>
-													<?php $calt = 0; foreach($companies as $row) {
+											<label for="outletId" class="field">
+												<select name="outletId" id="outletId" class="select2-outlet">
+													<option value="default">Choose Outlet Here</option>
+													<?php $calt = 0; foreach($outlets00 as $row) {
 														$calt++;
 														echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';
 													}?>
 												</select>
-												<i class="arrow"></i>
-											</label>
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="section">
-											<label for="outletId" class="field select">
-												<select name="outletId" id="outletId">
-													<option value="default">Choose company first...</option>
-												</select>
-												<i class="arrow"></i>
 											</label>
 										</div>
 									</div>
@@ -112,11 +110,10 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="section">
-											<label for="machId" class="field select">
-												<select name="machId" id="machId">
-													<option value="default">Choose company first...</option>
+											<label for="machId" class="field">
+												<select name="machId" id="machId" class="select2-machine">
+													<option value="default">Choose Outlet first...</option>
 												</select>
-												<i class="arrow"></i>
 											</label>
 										</div>
 									</div>
@@ -270,6 +267,9 @@
 	<!-- Validation -->
 	<script type="text/javascript" src="<?php echo base_url('assets/admin-tools/admin-forms/js/jquery.validate.min.js'); ?>"></script>
 	
+	<!-- Select2 plugin -->
+	<script src="<?php echo base_url('vendor/plugins/select2/select2.min.js'); ?>"></script>
+	
 	<script type="text/javascript" src="<?php echo base_url('vendor/plugins/moment/moment.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('vendor/plugins/globalize/src/core.js');?>"></script>
 	
@@ -283,14 +283,19 @@
 	
 			// Init Theme Core    
 			Core.init();
-			
-			$("#compId").change(function() {
-				$("#outletId").load("<?php echo base_url('tickets/outletdropdown'); ?>?choice=" + jQuery("#compId").val());
-				$("#machId").load("<?php echo base_url('tickets/outletdropdown'); ?>?choice=0");
-			});
+			$("#compId").select2({width: "100%"});
+			$("#outletId").select2({width: "100%"});
+			$("#machId").select2({width: "100%"});
 			
 			$("#outletId").change(function() {
-				$("#machId").load("<?php echo base_url('tickets/machinedropdown'); ?>?choice=" + jQuery("#outletId").val());
+				$("#compId").load("<?php echo base_url('tickets/companydropdown'); ?>?choice=" + jQuery("#outletId").val(),function(){
+					$("#compId").select2({width: "100%"});
+					$("#compId").hide();
+				});
+				$("#machId").load("<?php echo base_url('tickets/machinedropdown'); ?>?choice=" + jQuery("#outletId").val(),function(){
+					$("#machId").select2({width: "100%"});
+
+				});
 			});
 	
 			// Init tray navigation smooth scroll
@@ -318,13 +323,10 @@
 				errorClass: "state-error",
 				validClass: "state-success",
 				errorElement: "em",
-				
+				ignore: [],
 				/* @validation rules 
 				------------------------------------------ */
 				rules: {
-					compId:{
-						defaultvalue: "default"
-					},
 					outletId:{
 						defaultvalue: "default"
 					},
@@ -357,9 +359,6 @@
 				/* @validation error messages 
 				---------------------------------------------- */
 				messages:{
-					compId:{
-						defaultvalue: 'Please choose a company'
-					},
 					outletId:{
 						defaultvalue: 'Please choose an outlet'
 					},
@@ -465,6 +464,7 @@
 						beforeOpen: function(e) {
 							var Animation = $("#animation-switcher").find('.active-animation').attr('data-effect');
 							this.st.mainClass = Animation;
+							this.wrap.removeAttr('tabindex');
 						}
 					},
 					midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.

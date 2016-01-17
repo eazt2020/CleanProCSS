@@ -59,7 +59,7 @@
 											$calt++;
 											echo '<tr>';
 											echo '<td align="center">'.$row['id'].'</td>';
-											echo '<td align="center">'.strtoupper($row['machNo']).'</td>';
+											echo '<td>'.strtoupper($row['machNo']).'</td>';
 											echo '<td><a href="'.base_url('machines/details?id='.$row['id']).'&outletId='.$row['outletId'].'&compId='.$row['compId'].'">'.strtoupper($row['name']).'</a></td>';
 											echo '<td><img src="'.base_url('faicons/'.$row['imageName']).'" height="20" width="20"> '.strtoupper($row['type']).'</td>';
 											echo '<td><a href="'.base_url('companies/details?id='.$row['compId']).'">'.$row['compId'].'</a></td>';
@@ -88,26 +88,20 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="section">
-											<label for="compId" class="field select">
-												<select name="compId" id="compId">
-													<option value="default">Choose Company...</option>
-													<?php $calt = 0; foreach($compan00 as $row) {
-														$calt++;
-														echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';
-													}?>
-												</select>
-												<i class="arrow"></i>
-											</label>
+											<select name="compId" id="compId" class="select2-company">
+												<option value="default">Choose Company...</option>
+												<?php $calt = 0; foreach($compan00 as $row) {
+													$calt++;
+													echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';
+												}?>
+											</select>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="section">
-											<label for="outletId" class="field select">
-												<select id="outletId" name="outletId">
-													<option value="default">Choose a company first...</option>
-												</select>
-												<i class="arrow"></i>
-											</label>
+											<select id="outletId" name="outletId" class="select2-outlet">
+												<option value="default">Choose a company first...</option>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -198,6 +192,9 @@
 	<!-- Validation -->
 	<script type="text/javascript" src="<?php echo base_url('assets/admin-tools/admin-forms/js/jquery.validate.min.js'); ?>"></script>
 	
+	<!-- Select2 plugin -->
+	<script src="<?php echo base_url('vendor/plugins/select2/select2.min.js'); ?>"></script>
+	
 	<script type="text/javascript" src="<?php echo base_url('vendor/plugins/moment/moment.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('vendor/plugins/globalize/src/core.js');?>"></script>
 	
@@ -217,10 +214,17 @@
 				offset: -145
 			});
 			
+			// Init Select2 - Basic Single
+			$("#compId").select2({width: "100%"});
+			$("#outletId").select2({width: "100%"});
+
 			$("#compId").change(function() {
-				$("#outletId").load("<?php echo base_url('machines/machinedropdown'); ?>?choice=" + jQuery("#compId").val());
+				$("#outletId").load("<?php echo base_url('machines/machinedropdown'); ?>?choice=" + jQuery("#compId").val(),function(){
+				$("#outletId").select2("val"); 
+				$("#outletId").select2("val", "default");
+				});
 			});
-			
+
 			// Custom tray navigation animation
 			setTimeout(function() {
 				$('.custom-nav-animation li').each(function(i, e) {
@@ -358,6 +362,7 @@
 						beforeOpen: function(e) {
 							var Animation = $("#animation-switcher").find('.active-animation').attr('data-effect');
 							this.st.mainClass = Animation;
+							this.wrap.removeAttr('tabindex');
 						}
 					},
 					midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
