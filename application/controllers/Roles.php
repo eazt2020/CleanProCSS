@@ -231,7 +231,7 @@ class Roles extends MY_Controller {
 					$calcul00++;
 					
 					$this->db->trans_start();
-					$validp00 = $this->db->query("SELECT COUNT(p1.id) AS total FROM local_identities AS p1 WHERE p1.id =?",array($introw00));
+					$validp00 = $this->db->query("SELECT COUNT(p1.id) AS total FROM local_identities AS p1 WHERE p1.role =?",array($introw00));
 					$this->db->trans_complete();
 					
 					$validp00 = $validp00->row();

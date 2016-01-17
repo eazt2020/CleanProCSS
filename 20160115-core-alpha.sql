@@ -1,21 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Jan 15, 2016 at 07:13 PM
--- Server version: 10.1.9-MariaDB-log
--- PHP Version: 5.6.15
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
 -- Database: `cleanpro`
 --
@@ -154,6 +136,12 @@ CREATE TABLE `config_notification` (
   `dateArc` varchar(50) COLLATE latin1_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
+--
+-- Dumping data for table `config_notification`
+--
+
+INSERT INTO `config_notification` VALUES(1, 'New Update 20160115-core-alpha-20160115-fr-ui2 Installed', 'TmV3IFVwZGF0ZSAyMDE2MDExNS1jb3JlLWFscGhhLTIwMTYwMTE1LWZyLXVpMiBoYXMgYmVlbiBpbnN0YWxsZWQuIEluIG9yZGVyIHRvIGVuc3VyZSB0aGF0IHVwZGF0ZSBpbnN0YWxsYXRpb24gd29yayBhcyBleHBlY3RlZCwgcGxlYXNlIHJlY3JlYXRlIGFsbCB1c2VyIHJvbGVzIHRoYXQgaGFzIGJlZW4gY3JlYXRlZCBiZWZvcmUgdXBkYXRlIDIwMTYwMTE1LWNvcmUtYWxwaGEtMjAxNjAxMTUtZnItdWkyICBhbmQgcmUtYXNzaWduIGl0IHRvIHRoZSBzeXN0ZW0gdXNlcnMu', '1007', '1453651200', 'admin', '1453069301');
+
 -- --------------------------------------------------------
 
 --
@@ -166,6 +154,16 @@ CREATE TABLE `config_sessions` (
   `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `data` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+--
+-- Dumping data for table `config_sessions`
+--
+
+INSERT INTO `config_sessions` VALUES('66fecf89f8b0bfc1b74de2379883282e5b5dddc5', '::1', 1453066619, '');
+INSERT INTO `config_sessions` VALUES('7a3aa0393ccecf39143e137023561e465abd6736', '127.0.0.1', 1453046998, 0x7569647c733a353a2261646d696e223b7069647c733a33323a223664623666383965653731353164623830616338383731323532373333373365223b69734c6f67676564496e7c623a313b66756c6c6e616d657c733a31333a2261646d696e6973747261746f72223b);
+INSERT INTO `config_sessions` VALUES('b49c1fc2b7363873c713ffc8c00caf57b9dac44a', '::1', 1453066619, '');
+INSERT INTO `config_sessions` VALUES('bdbdfe26ae2b3653442a4a3a4fb113308bd1dd9c', '::1', 1453069317, 0x7569647c733a353a2261646d696e223b7069647c733a33323a223664623666383965653731353164623830616338383731323532373333373365223b69734c6f67676564496e7c623a313b66756c6c6e616d657c733a31333a2261646d696e6973747261746f72223b);
+INSERT INTO `config_sessions` VALUES('f1490bf633c632b63b30b0f6c3eaeca0c0356b97', '::1', 1453066720, '');
 
 -- --------------------------------------------------------
 
@@ -298,6 +296,7 @@ CREATE TABLE `config_system_kb` (
 --
 
 INSERT INTO `config_system_kb` VALUES(1, '20160115-core-alpha-20160115-fr-ui01', '');
+INSERT INTO `config_system_kb` VALUES(2, '20160115-core-alpha-20160115-fr-ui02', '');
 
 -- --------------------------------------------------------
 
@@ -338,7 +337,7 @@ CREATE TABLE `identities` (
 -- Dumping data for table `identities`
 --
 
-INSERT INTO `identities` VALUES(1001, 'admin', 'administrator', 'eazt2020@gmail.com', '1', 'admin', '1452856177');
+INSERT INTO `identities` VALUES(1003, 'admin', 'administrator', 'eazt2020@gmail.com', '1', 'eazt2020', '1453066999');
 
 -- --------------------------------------------------------
 
@@ -359,7 +358,7 @@ CREATE TABLE `local_identities` (
 -- Dumping data for table `local_identities`
 --
 
-INSERT INTO `local_identities` VALUES(1001, '6db6f89ee7151db80ac887125273373e', 'YWRtaW4=', 1001, 'admin', '1452856177');
+INSERT INTO `local_identities` VALUES(1003, '6db6f89ee7151db80ac887125273373e', 'YWRtaW4=', 1002, 'eazt2020', '1453066999');
 
 -- --------------------------------------------------------
 
@@ -418,17 +417,19 @@ CREATE TABLE `privilege` (
 -- Dumping data for table `privilege`
 --
 
-INSERT INTO `privilege` VALUES(1001, '1001', '1.1.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1002, '1001', '1.2.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1003, '1001', '1.3.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1004, '1001', '1.4.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1005, '1001', '1.5.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1006, '1001', '1.6.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1007, '1001', '3.2.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1008, '1001', '3.3.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1009, '1001', '3.4.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1010, '1001', '3.5.0', 'crud', '', '');
-INSERT INTO `privilege` VALUES(1173, '1001', '3.6.0', 'crud', 'admin', '123456789');
+INSERT INTO `privilege` VALUES(1198, '1002', '1.0.0', 'crud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1199, '1002', '1.1.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1200, '1002', '1.2.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1201, '1002', '1.3.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1202, '1002', '1.4.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1203, '1002', '3.1.0', 'crud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1204, '1002', '3.2.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1205, '1002', '3.3.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1206, '1002', '3.4.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1207, '1002', '3.5.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1208, '1002', '1.5.0', 'r', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1209, '1002', '3.6.0', 'rcud', 'admin', '1453066798');
+INSERT INTO `privilege` VALUES(1210, '1002', '1.6.0', 'crud', 'admin', '1453066798');
 
 -- --------------------------------------------------------
 
@@ -447,7 +448,7 @@ CREATE TABLE `roles` (
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` VALUES(1001, 'administrator', 'admin', '1452470913');
+INSERT INTO `roles` VALUES(1002, 'root access', 'admin', '1453066798');
 
 -- --------------------------------------------------------
 
@@ -665,22 +666,22 @@ ALTER TABLE `config_ticket_status`
 -- AUTO_INCREMENT for table `identities`
 --
 ALTER TABLE `identities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1003;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1005;
 --
 -- AUTO_INCREMENT for table `local_identities`
 --
 ALTER TABLE `local_identities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1003;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1005;
 --
 -- AUTO_INCREMENT for table `privilege`
 --
 ALTER TABLE `privilege`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1196;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1224;
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1003;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1004;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
