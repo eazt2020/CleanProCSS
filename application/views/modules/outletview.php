@@ -89,13 +89,15 @@
 								<div class="row">
 									<div class="col-md-4">
 										<div class="section">
-											<select id="compId" name="compId" class="select2-company">
-												<option value="default">Choose a Company...</option>
-												<?php $calt = 0; foreach($company0 as $company1) {
-													$calt++;
-													echo '<option value="'.$company1['id'].'">#'.$company1['id'].'| '.ucwords($company1['name']).'</option>';
-												}?>
-											</select>
+											<label for="compId" class="field">
+												<select id="compId" name="compId" class="select2-company">
+													<option value="default">Choose a Company...</option>
+													<?php $calt = 0; foreach($company0 as $company1) {
+														$calt++;
+														echo '<option value="'.$company1['id'].'">#'.$company1['id'].'| '.ucwords($company1['name']).'</option>';
+													}?>
+												</select>
+											</label>
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -302,6 +304,7 @@
 				errorClass: "state-error",
 				validClass: "state-success",
 				errorElement: "em",
+				ignore: [],
 				
 				/* @validation rules 
 				------------------------------------------ */
@@ -313,8 +316,7 @@
 						required: true,
 					},
 					contact:{
-						required: true,
-						digits: true
+						required: true
 					},
 					add1:{
 						required: true
@@ -341,8 +343,7 @@
 						required: 'This field is mandatory'
 					},
 					contact:{
-						required: 'This field is mandatory',
-						digits: 'This field only accept numeric values'
+						required: 'This field is mandatory'
 					},
 					add1:{
 						required: 'This field is mandatory'

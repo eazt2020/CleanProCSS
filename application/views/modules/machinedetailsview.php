@@ -184,7 +184,6 @@
 										<div class="section">
 											<label for="type" class="field select">
 												<select name="type" id="type">
-													<option value="default">Machine Type</option>
 													<?php $calt = 0; foreach($mactyp00 as $mactyp00) {
 														$calt++;
 														if($row['typeId'] == $mactyp00['id']){
@@ -203,7 +202,6 @@
 										<div class="section">
 											<label for="status" class="field select">
 												<select name="status" id="status">
-													<option value="default">Machine Status</option>
 													<?php $calt = 0; foreach($status00 as $status00) {
 														$calt++;
 														if($row['statusId'] == $status00['id']){

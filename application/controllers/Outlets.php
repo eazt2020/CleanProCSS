@@ -75,74 +75,45 @@ class Outlets extends MY_Controller {
 		if($matchp00->num_rows() > 0){$powermat = $matchp01->priv;}else{$powermat = 'x';}
 
 		if (strpos($powermat,$powerval) !== false) {
-			$this->form_validation->set_error_delimiters('<p>', '</p>');
-			$this->form_validation->set_rules('compId', 'compId', 'required',array('required' => 'You must choose a company name in the \'Company Name\' field.<br>'));
-			$this->form_validation->set_rules('name', 'name', 'required',array('required' => 'You must provide an outlet name in the \'Outlet Name\' field.<br>'));
-			$this->form_validation->set_rules('contact', 'contact', 'numeric',array('numeric' => '\'Contact Number\' field only accept numeric values.<br>'));
-			$this->form_validation->set_rules('add1', 'add1', 'required',array('required' => 'You must provide a valid address in the \'Address Line 1\' field.<br>'));
-			$this->form_validation->set_rules('city', 'city', 'required',array('required' => 'You must complete the company address \'City\' field.<br>'));
-			$this->form_validation->set_rules('state', 'state', 'required',array('required' => 'You must complete the company address \'State\' field.<br>'));
-			$this->form_validation->set_rules('postcode', 'postcode', 'required|numeric',array('required' => 'You must complete the company address \'Postcode\' field.<br>','numeric' => '\'Postcode\' field only accept numeric values.<br>'));
-		
-			if ($this->form_validation->run() == FALSE){
-				$errorcode = '<div class="alert alert-danger dark alert-dismissable" id="alert-2"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.validation_errors().'</div>';
-				$errormsg = $this->session->set_flashdata('message', $errorcode);
-				
-				if(isset($_GET['id']) && $_GET['id'] !== 0){
-					redirect('outlets/edit?id='.$_GET['id']);
-				}
-				else {
-					redirect('outlets/add');
-				}
+			$query = $this->db->query('SELECT id FROM outlets ORDER BY id DESC LIMIT 1');
+			$calt = $query->row();
+			
+			if(isset($_GET['id']) && $_GET['id'] !== 0){$calt = $_GET['id'];}else {$calt = 1 + $calt->id;}
+			
+			$ops = array(
+				'id' => $calt,
+				'compId' => $_POST['compId'],
+				'name' => strtolower($_POST['name']),
+				'contact' => $_POST['contact'],
+				'primeAdd' => strtolower($_POST['add1']),
+				'secondAdd' =>  strtolower($_POST['add2']),
+				'city' => strtolower($_POST['city']),
+				'state' => strtolower($_POST['state']),
+				'postcode' => $_POST['postcode'],
+				'userArc' => 'admin',
+				'dateArc' => time()
+			);
+			
+			if(isset($_GET['id']) && $_GET['id'] !== 0){
+				$this->db->trans_start();
+				$this->db->replace('outlets', $ops);
+				$this->db->trans_complete();
 			}
-			else{
-				$query = $this->db->query('SELECT id FROM outlets ORDER BY id DESC LIMIT 1');
-				$calt = $query->row();
+			else {
+				$this->db->trans_start();
+				$this->db->insert('outlets', $ops);
+				$this->db->trans_complete();
+			}
+			
+			if(isset($_GET['id']) && $_GET['id'] !== 0){
+				$this->session->set_flashdata('message','<div class="col-md-12"><div class="alert alert-success dark alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Details of outlet <strong>'.$calt.'</strong> successfully updated.</div></div>');
+			
+				redirect('outlets/details?id='.$_GET['id']);
+			}
+			else {
+				$this->session->set_flashdata('message','<div class="col-md-12"><div class="alert alert-success dark alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Outlet with ID <strong>'.$calt.'</strong> successfully created.</div></div>');
 				
-				if(isset($_GET['id']) && $_GET['id'] !== 0){
-					$calt = $_GET['id'];
-				}
-				else {
-					$calt = 1 + $calt->id;
-				}
-				
-
-				$ops = array(
-					'id' => $calt,
-					'compId' => $_POST['compId'],
-					'name' => strtolower($_POST['name']),
-					'contact' => $_POST['contact'],
-					'primeAdd' => strtolower($_POST['add1']),
-					'secondAdd' =>  strtolower($_POST['add2']),
-					'city' => strtolower($_POST['city']),
-					'state' => strtolower($_POST['state']),
-					'postcode' => $_POST['postcode'],
-					'userArc' => 'admin',
-					'dateArc' => time()
-				);
-				
-				if(isset($_GET['id']) && $_GET['id'] !== 0){
-					$this->db->trans_start();
-					$this->db->replace('outlets', $ops);
-					$this->db->trans_complete();
-				}
-				else {
-					$this->db->trans_start();
-					$this->db->insert('outlets', $ops);
-					$this->db->trans_complete();
-				}
-				
-				
-				if(isset($_GET['id']) && $_GET['id'] !== 0){
-					$this->session->set_flashdata('message','<div class="col-md-12"><div class="alert alert-success dark alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Details of outlet <strong>'.$calt.'</strong> successfully updated.</div></div>');
-				
-					redirect('outlets/details?id='.$_GET['id']);
-				}
-				else {
-					$this->session->set_flashdata('message','<div class="col-md-12"><div class="alert alert-success dark alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Outlet with ID <strong>'.$calt.'</strong> successfully created.</div></div>');
-					
-					redirect('outlets');
-				}
+				redirect('outlets');
 			}
 		}
 		else {

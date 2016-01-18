@@ -374,6 +374,82 @@
 					midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
 				});
 			});
+			
+			
+            // Add Placeholder text to datatables filter bar
+            $('.dataTables_filter input').attr("placeholder", "Search...");
+
+			$.validator.addMethod("defaultvalue", function(value, element, arg){
+				return arg != value;
+			}, "Value must not equal arg.");
+			
+			$( "#outlet-form" ).validate({
+				/* @validation states + elements 
+				------------------------------------------- */
+				errorClass: "state-error",
+				validClass: "state-success",
+				errorElement: "em",
+				ignore: [],
+				
+				/* @validation rules 
+				------------------------------------------ */
+				rules: {
+					name:{
+						required: true,
+					},
+					contact:{
+						required: true
+					},
+					add1:{
+						required: true
+					},
+					city:{
+						required: true
+					},
+					postcode:{
+						required: true,
+						digits: true
+					}
+				},
+			
+				/* @validation error messages 
+				---------------------------------------------- */
+				messages:{
+					name:{
+						required: 'This field is mandatory'
+					},
+					contact:{
+						required: 'This field is mandatory'
+					},
+					add1:{
+						required: 'This field is mandatory'
+					},
+					city:{
+						required: 'This field is mandatory'
+					},
+					postcode:{
+						required: 'This field is mandatory',
+						digits: 'This field only accept numeric values'
+					}
+				},
+		
+				/* @validation highlighting + error placement  
+				---------------------------------------------------- */ 
+				highlight: function(element, errorClass, validClass) {
+					$(element).closest('.field').addClass(errorClass).removeClass(validClass);
+				},
+				unhighlight: function(element, errorClass, validClass) {
+					$(element).closest('.field').removeClass(errorClass).addClass(validClass);
+				},
+				errorPlacement: function(error, element) {
+					if (element.is(":radio") || element.is(":checkbox")) {
+						element.closest('.option-group').after(error);
+					}
+					else{
+						error.insertAfter(element.parent());
+					}
+				}
+			});
 
         });
     </script>

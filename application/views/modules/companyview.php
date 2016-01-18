@@ -289,8 +289,7 @@
 						required: true
 					},
 					contact:{
-						required: true,
-						digits: true
+						required: true
 					},
 					add1:{
 						required: true
@@ -314,8 +313,7 @@
 						required: 'This field is mandatory'
 					},
 					contact:{
-						required: 'This field is mandatory',
-						digits: 'This field only accept numeric values'
+						required: 'This field is mandatory'
 					},
 					add1:{
 						required: 'This field is mandatory'

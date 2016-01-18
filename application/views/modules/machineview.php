@@ -88,20 +88,24 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="section">
-											<select name="compId" id="compId" class="select2-company">
-												<option value="default">Choose Company...</option>
-												<?php $calt = 0; foreach($compan00 as $row) {
-													$calt++;
-													echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';
-												}?>
-											</select>
+											<label for="compId" class="field">
+												<select name="compId" id="compId" class="select2-company">
+													<option value="default">Choose Company...</option>
+													<?php $calt = 0; foreach($compan00 as $row) {
+														$calt++;
+														echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';
+													}?>
+												</select>
+											</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="section">
-											<select id="outletId" name="outletId" class="select2-outlet">
-												<option value="default">Choose a company first...</option>
-											</select>
+											<label for="outletId" class="field">
+												<select id="outletId" name="outletId" class="select2-outlet">
+													<option value="default">Choose a company first...</option>
+												</select>
+											</label>
 										</div>
 									</div>
 								</div>
@@ -245,6 +249,7 @@
 				errorClass: "state-error",
 				validClass: "state-success",
 				errorElement: "em",
+				ignore: [],
 				
 				/* @validation rules 
 				------------------------------------------ */
