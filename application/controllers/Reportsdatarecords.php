@@ -6,7 +6,7 @@ class Reportsdatarecords extends MY_Controller {
 	
 	public function overallreport()
 	{
-		$powervalue = 'c';
+		$powervalue = 'r';
 		$screenid = '1.5.0';
 		$userid = $this->session->uid;
 		
@@ -59,7 +59,7 @@ class Reportsdatarecords extends MY_Controller {
 	
 	public function overallrefund()
 	{
-		$powervalue = 'c';
+		$powervalue = 'r';
 		$screenid = '1.5.0';
 		$userid = $this->session->uid;
 		
@@ -112,7 +112,7 @@ class Reportsdatarecords extends MY_Controller {
 	
 	public function companyreport()
 	{
-		$powervalue = 'c';
+		$powervalue = 'r';
 		$screenid = '1.5.0';
 		$userid = $this->session->uid;
 		
@@ -162,7 +162,7 @@ class Reportsdatarecords extends MY_Controller {
 	
 	public function outletreport()
 	{
-		$powervalue = 'c';
+		$powervalue = 'r';
 		$screenid = '1.5.0';
 		$userid = $this->session->uid;
 		
@@ -214,7 +214,7 @@ class Reportsdatarecords extends MY_Controller {
 	
 	public function machinesreport()
 	{
-		$powervalue = 'c';
+		$powervalue = 'r';
 		$screenid = '1.5.0';
 		$userid = $this->session->uid;
 		
@@ -266,7 +266,7 @@ class Reportsdatarecords extends MY_Controller {
 	
 	public function errorcodesreport()
 	{
-		$powervalue = 'c';
+		$powervalue = 'r';
 		$screenid = '1.5.0';
 		$userid = $this->session->uid;
 		
@@ -320,7 +320,7 @@ class Reportsdatarecords extends MY_Controller {
 	
 	public function filteredrefund()
 	{
-		$powervalue = 'c';
+		$powervalue = 'r';
 		$screenid = '1.5.0';
 		$userid = $this->session->uid;
 		
