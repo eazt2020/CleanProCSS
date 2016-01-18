@@ -345,14 +345,8 @@
 					name:{
 						required: true
 					},
-					bankAc:{
-						digits: true
-					},
 					amount:{
 						number: true
-					},
-					contact:{
-						digits: true
 					}
 				},
 			
@@ -377,14 +371,8 @@
 					name:{
 						required: 'Fill in customer name'
 					},
-					bankAc:{
-						digits: 'This field only accept numeric values'
-					},
 					amount:{
 						number: 'This field only accept decimal values'
-					},
-					contact:{
-						digits: 'This field only accept numeric values'
 					}
 				},
 		
