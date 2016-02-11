@@ -49,7 +49,7 @@
 													<div class="admin-form">
 														<?php $form_attributes = array('method' => 'POST','id' => 'overallreport'); echo form_open('reportsdatarecords/overallreport',$form_attributes); ?>
 															<div class="row">
-																<div class="col-md-6">
+																<div class="col-md-4">
 																	<div class="section">
 																		<div id="datetimepicker1">
 																			<label class="field prepend-icon">
@@ -59,7 +59,7 @@
 																		</div>
 																	</div>
 																</div>
-																<div class="col-md-6">
+																<div class="col-md-4">
 																	<div class="section">
 																		<div id="datetimepicker2">
 																			<label class="field prepend-icon">
@@ -67,6 +67,17 @@
 																				<label for="description" class="field-icon"><i class="fa fa-calendar"></i></label>
 																			</label>
 																		</div>
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="section">
+																		<label for="sortie" class="field select">
+																			<select name="sortie" id="sortie">
+																				<option value="DESC">Descending</option>
+																				<option value="ASC">Ascending</option>
+																			</select>
+																			<i class="arrow"></i>
+																		</label>
 																	</div>
 																</div>
 															</div>

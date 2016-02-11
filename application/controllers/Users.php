@@ -25,6 +25,7 @@ class Users extends MY_Controller {
 			$header00 = $this->db->query("SELECT value FROM config_system_info WHERE id = ?",array(1003));
 			$sidebar0 = $this->db->query("SELECT p4.screen AS screen from identities AS p1 INNER JOIN local_identities AS p2 ON p1.id = p2.id INNER JOIN roles AS p3 ON p2.role = p3.id INNER JOIN privilege AS p4 ON p3.id = p4.roleId WHERE p1.username = ? AND p4.value != '' ORDER BY p4.screen ASC;",array($userid00));
 			$sysuser0 = $this->db->query("SELECT p1.id AS id,p1.username AS username,p1.name AS name,p1.email AS email,p1.status AS status FROM identities AS p1;");
+			$sysuser1 = $this->db->query("SELECT p1.id AS id,p1.username AS username,p1.name AS name,p1.email AS email,p1.status AS status FROM identities AS p1 WHERE p1.username <> 'admin';");
 			$usrole00 = $this->db->query("SELECT p1.id AS id,p1.name AS name FROM roles AS p1;");
 			$this->db->trans_complete();
 			
@@ -32,7 +33,7 @@ class Users extends MY_Controller {
 			$header00 = $header00->row();
 		
 			//page arrays
-			$attr['sysuser0'] = $sysuser0->result_array();
+			if ($userid00 == 'admin') {$attr['sysuser0'] = $sysuser0->result_array();}else{$attr['sysuser0'] = $sysuser1->result_array();}
 			$attr['usrole00'] = $usrole00->result_array();
 			
 			//global arrays

@@ -49,9 +49,14 @@
 													echo '<td>'.$tick00['id'].'</td>';
 													echo '</tr>';
 													echo '<tr>';
-													echo '<td>Creation Date</td>';
+													echo '<td>Issue Date</td>';
 													echo '<td width="10px" align="center">:</td>';
-													echo '<td>'.date('d/m/Y',$tick00['crDate']).'</td>';
+													echo '<td>'.date('Y-m-d H:i:s',$tick00['crDate']).'</td>';
+													echo '</tr>';
+													echo '<tr>';
+													echo '<td>Issue By</td>';
+													echo '<td width="10px" align="center">:</td>';
+													echo '<td>'.$tick00['userCr'].'</td>';
 													echo '</tr>';
 													echo '<tr>';
 													echo '<td>Company Name</td>';
@@ -132,14 +137,16 @@
 									</div>
 									<br>
 									<div class="row">
-										<div class="col-md-2">
-											<div id="animation-switcher">
-												<button type="button" class="btn btn-alert br2 btn-sm btn-block" data-effect="mfp-zoomIn">
-													<i class="glyphicons glyphicons-circle_plus hidden-lg"></i>
-													<span class="hidden-xs">Update ticket details</span>
-												</button>
-											</div>
-										</div>
+										<?php if (strpos($updateacl,'u') !== false) {
+											echo '<div class="col-md-2">';
+											echo '<div id="animation-switcher">';
+											echo '<button type="button" class="btn btn-alert br2 btn-sm btn-block" data-effect="mfp-zoomIn">';
+											echo '<i class="glyphicons glyphicons-circle_plus hidden-lg"></i>';
+											echo '<span class="hidden-xs">Update ticket details</span>';
+											echo '</button>';
+											echo '</div>';
+											echo '</div>';
+										}?>
 										<div class="col-md-2">
 											<button type="submit" class="btn btn-danger br2 btn-sm btn-block" form="rmticket" value="Submit">
 												<i class="glyphicons glyphicons-circle_minus hidden-lg"></i>
@@ -170,11 +177,12 @@
 								<input type="hidden" name="outletId" id="outletId" value="<?php echo $tick00['outletId']; ?>">
 								<input type="hidden" name="machId" id="machId" value="<?php echo $tick00['machId']; ?>">
 								<input type="hidden" name="crDate" id="crDate" value="<?php echo $tick00['crDate']; ?>">
+								<input type="hidden" name="userCr" id="userCr" value="<?php echo $tick00['userCr']; ?>">
 								<div class="row">
 									<div class="col-md-12">
 										<div class="section">
-											<label for="error" class="field select">
-												<select id="error" name="error">
+											<label for="error" class="field">
+												<select name="error" id="error" class="select2-error">
 													<?php $calt00 = 0; foreach($errorcode as $errcod00) {
 														$calt00++;
 														echo '<option value="'.$errcod00['id'].'"';
@@ -184,7 +192,6 @@
 														echo '>#'.$errcod00['id'].'| '.ucwords($errcod00['name']).'</option>';
 													}?>
 												</select>
-												<i class="arrow"></i>
 											</label>
 										</div>
 									</div>
@@ -330,6 +337,9 @@
 	<!-- Validation -->
 	<script type="text/javascript" src="<?php echo base_url('assets/admin-tools/admin-forms/js/jquery.validate.min.js'); ?>"></script>
 	
+	<!-- Select2 plugin -->
+	<script src="<?php echo base_url('vendor/plugins/select2/select2.min.js'); ?>"></script>
+	
 	<script type="text/javascript" src="<?php echo base_url('vendor/plugins/moment/moment.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('vendor/plugins/globalize/src/core.js');?>"></script>
 	
@@ -343,6 +353,7 @@
 	
 			// Init Theme Core    
 			Core.init();
+			$("#error").select2({width: "100%"});
 			
 			$("#compId").change(function() {
 				$("#outletId").load("<?php echo base_url('tickets/outletdropdown'); ?>?choice=" + jQuery("#compId").val());
@@ -514,6 +525,7 @@
 						beforeOpen: function(e) {
 							var Animation = $("#animation-switcher").find('.active-animation').attr('data-effect');
 							this.st.mainClass = Animation;
+							this.wrap.removeAttr('tabindex');
 						}
 					},
 					midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.

@@ -118,7 +118,7 @@ class Roles extends MY_Controller {
 				array(
 					'roleId'	=> $calcul00,
 					'screen'	=> '1.4.0',
-					'value'		=> ($_POST['ticpvr00'].$_POST['ticpvr01'].$_POST['ticpvr02']),
+					'value'		=> ($_POST['ticpvr00'].$_POST['ticpvr01'].$_POST['ticpvr02'].$_POST['ticpvr03']),
 					'userArc'	=> $userid00,
 					'dateArc'	=> time()
 				),

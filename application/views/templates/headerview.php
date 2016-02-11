@@ -65,9 +65,6 @@
                 <li>
                     <span id="toggle_sidemenu_l2" class="glyphicon glyphicon-log-in fa-flip-horizontal hidden"></span>
                 </li>
-                <li class="hidden-xs">
-                    <img src="<?php echo base_url('assets/img/demoset.png'); ?>" title="CleanProCSS Logo" class="center-block img-responsive" style="max-width: 250px;">
-                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

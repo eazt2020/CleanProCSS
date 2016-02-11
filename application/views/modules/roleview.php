@@ -95,7 +95,8 @@
 											<tr>
 												<td>Screen Privilege</td>
 												<td width="100px" align="center">View</td>
-												<td width="100px" align="center">Create/Update</td>
+												<td width="100px" align="center">Create</td>
+												<td width="100px" align="center">Update</td>
 												<td width="100px" align="center">Delete</td>
 											</tr>
 											<tr>
@@ -106,6 +107,7 @@
 												<td align="center">
 													<input type="checkbox" name="compvr01" id="compvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="compvr02" id="compvr02" value="d">
 												</td>
@@ -118,6 +120,7 @@
 												<td align="center">
 													<input type="checkbox" name="outpvr01" id="outpvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="outpvr02" id="outpvr02" value="d">
 												</td>
@@ -130,6 +133,7 @@
 												<td align="center">
 													<input type="checkbox" name="macpvr01" id="macpvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="macpvr02" id="macpvr02" value="d">
 												</td>
@@ -140,10 +144,13 @@
 													<input type="checkbox" name="ticpvr00" id="ticpvr00" value="r">
 												</td>
 												<td align="center">
-													<input type="checkbox" name="ticpvr01" id="ticpvr01" value="cu">
+													<input type="checkbox" name="ticpvr01" id="ticpvr01" value="c">
 												</td>
 												<td align="center">
-													<input type="checkbox" name="ticpvr02" id="ticpvr02" value="d">
+													<input type="checkbox" name="ticpvr02" id="ticpvr02" value="u">
+												</td>
+												<td align="center">
+													<input type="checkbox" name="ticpvr03" id="ticpvr03" value="d">
 												</td>
 											</tr>
 											<tr>
@@ -154,6 +161,7 @@
 												<td align="center">
 													<input type="checkbox" name="notpvr01" id="notpvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="notpvr02" id="notpvr02" value="d">
 												</td>
@@ -166,6 +174,7 @@
 												<td align="center">
 													<input type="checkbox" name="errpvr01" id="errpvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="errpvr02" id="errpvr02" value="d">
 												</td>
@@ -178,6 +187,7 @@
 												<td align="center">
 													<input type="checkbox" name="usrpvr01" id="usrpvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="usrpvr02" id="usrpvr02" value="d">
 												</td>
@@ -190,6 +200,7 @@
 												<td align="center">
 													<input type="checkbox" name="rolpvr01" id="rolpvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="rolpvr02" id="rolpvr02" value="d">
 												</td>
@@ -202,6 +213,7 @@
 												<td align="center">
 													<input type="checkbox" name="faqpvr01" id="faqpvr01" value="cu">
 												</td>
+												<td align="center"></td>
 												<td align="center">
 													<input type="checkbox" name="faqpvr02" id="faqpvr02" value="d">
 												</td>
@@ -211,10 +223,9 @@
 												<td align="center">
 													<input type="checkbox" name="reppvr00" id="reppvr00" value="r">
 												</td>
-												<td align="center">
-												</td>
-												<td align="center">
-												</td>
+												<td align="center"></td>
+												<td align="center"></td>
+												<td align="center"></td>
 											</tr>
 										</tbody>
 									</table>

@@ -22,20 +22,24 @@ class Reportsdatarecords extends MY_Controller {
 			
 			$datefr00 = 0;
 			$dateto00 = time();
+			$sortie = $_POST['sortie'];
 			
 			if(!empty($_POST['datefr00'])){ $datefr00 = strtotime(str_replace('/', '-',$_POST['datefr00']));}
 			if(!empty($_POST['dateto00'])){ $dateto00 = strtotime(str_replace('/', '-',$_POST['dateto00']));}
 			
 			$this->db->trans_start();
-			$query = $this->db->query('SELECT p1.id , p1.name , COUNT(p2.id) AS total FROM outlets AS p1 INNER JOIN tickets AS p2 ON p1.id = p2.outletId GROUP BY p2.outletId;');
+			$query = $this->db->query('SELECT p1.id , p1.name, COALESCE(p2.total,0) AS total FROM outlets AS p1 LEFT JOIN (SELECT outletId, COUNT(id) AS total FROM tickets WHERE crDate BETWEEN ? AND ? GROUP BY outletId) AS p2 ON p1.id = p2.outletId ORDER BY p2.total '.$sortie,array($datefr00,$dateto00));
 			$this->db->trans_complete();
 			$data['tickets'] = $query->result_array();
 			
 			$this->db->trans_start();
-			$query = $this->db->query('SELECT COUNT(id) AS total FROM tickets;');
+			$query = $this->db->query('SELECT COUNT(id) AS total FROM tickets WHERE crDate BETWEEN ? AND ?',array($datefr00,$dateto00));
 			$row = $query->row();
 			$this->db->trans_complete();
 			$data['total'] = $row->total;
+			
+			$data['datefr00'] = $datefr00;
+			$data['dateto00'] = $dateto00;
 			
 			if($_POST['preview0'] == '1'){
 				$this->load->view('modules/html2pdf/overallreport', $data);
@@ -80,15 +84,18 @@ class Reportsdatarecords extends MY_Controller {
 			if(!empty($_POST['dateto00'])){ $dateto00 = strtotime(str_replace('/', '-',$_POST['dateto00']));}
 			
 			$this->db->trans_start();
-			$query = $this->db->query('SELECT p1.id , p1.name , SUM(p2.amount) AS total FROM outlets AS p1 INNER JOIN tickets AS p2 ON p1.id = p2.outletId WHERE p2.crDate BETWEEN ? AND ? GROUP BY p2.outletId;',array($datefr00,$dateto00));
+			$query = $this->db->query('SELECT p1.id , p1.name, COALESCE(p2.total,0) AS total FROM outlets AS p1 LEFT JOIN (SELECT outletId, SUM(amount) AS total FROM tickets WHERE refund = 1 AND crDate BETWEEN ? AND ? GROUP BY outletId) AS p2 ON p1.id = p2.outletId ORDER BY p2.total DESC;',array($datefr00,$dateto00));
 			$this->db->trans_complete();
 			$data['tickets'] = $query->result_array();
 			
 			$this->db->trans_start();
-			$query = $this->db->query('SELECT SUM(amount) AS total FROM tickets;');
+			$query = $this->db->query('SELECT SUM(amount) AS total FROM tickets WHERE refund = 1 AND crDate BETWEEN ? AND ?;',array($datefr00,$dateto00));
 			$row = $query->row();
 			$this->db->trans_complete();
 			$data['total'] = $row->total;
+			
+			$data['datefr00'] = $datefr00;
+			$data['dateto00'] = $dateto00;
 			
 			if($_POST['preview0'] == '1'){
 				$this->load->view('modules/html2pdf/overallrefund', $data);
@@ -133,12 +140,15 @@ class Reportsdatarecords extends MY_Controller {
 			if(!empty($_POST['dateto00'])){ $dateto00 = strtotime(str_replace('/', '-',$_POST['dateto00']));}
 			
 			$this->db->trans_start();
-			$company = $this->db->query('SELECT p1.id AS id,p1.name AS name FROM companies AS p1;');
-			$outlet0 = $this->db->query('SELECT p1.id AS id,p1.name AS name,p1.compId AS compId,SUM(p2.amount) AS total FROM outlets AS p1 INNER JOIN tickets AS p2 ON p1.id = p2.outletId WHERE p2.crDate BETWEEN ? AND ? GROUP BY p2.outletId;',array($datefr00,$dateto00));
+			$company = $this->db->query('SELECT p1.id AS id,p1.name AS name, COALESCE(p2.total,0) AS total FROM companies AS p1 LEFT JOIN (SELECT compId, outletId, SUM(amount) AS total FROM tickets WHERE refund = 1 AND crDate BETWEEN ? AND ? GROUP BY compId) AS p2 ON p1.id = p2.compId ORDER BY p2.total DESC;',array($datefr00,$dateto00));
+			$outlet0 = $this->db->query('SELECT p1.compId, p1.id , p1.name, COALESCE(p2.total,0) AS total FROM outlets AS p1 LEFT JOIN (SELECT outletId, SUM(amount) AS total FROM tickets WHERE refund = 1 AND crDate BETWEEN ? AND ? GROUP BY outletId) AS p2 ON p1.id = p2.outletId ORDER BY p2.total DESC;',array($datefr00,$dateto00));
 			$this->db->trans_complete();
 			
 			$data['company'] = $company->result_array();
 			$data['outlet0'] = $outlet0->result_array();
+			
+			$data['datefr00'] = $datefr00;
+			$data['dateto00'] = $dateto00;
 
 			if($_POST['preview0'] == '1'){
 				$this->load->view('modules/html2pdf/companyreport', $data);
@@ -183,14 +193,17 @@ class Reportsdatarecords extends MY_Controller {
 			if(!empty($_POST['dateto00'])){ $dateto00 = strtotime(str_replace('/', '-',$_POST['dateto00']));}
 			
 			$this->db->trans_start();
-			$outlet0 = $this->db->query('SELECT p1.id AS id,p1.name AS name FROM outlets AS p1;');
-			$ticket0 = $this->db->query('SELECT p1.id AS id, p1.outletId AS outletId, p1.name AS name,p2.name AS error,p1.amount FROM tickets AS p1 INNER JOIN config_machine_error AS p2 ON p1.error = p2.id WHERE p1.crDate BETWEEN ? AND ?;',array($datefr00,$dateto00));
-			$totalt0 = $this->db->query('SELECT p1.id AS id,SUM(p2.amount) AS total FROM outlets AS p1 INNER JOIN tickets AS p2 ON p1.id = p2.outletId WHERE p2.crDate BETWEEN ? AND ? GROUP BY p2.outletId;',array($datefr00,$dateto00));
+			$outlet0 = $this->db->query('SELECT p1.id, p1.name, COALESCE(p2.total,0) AS total FROM outlets AS p1 LEFT JOIN (SELECT outletId, COUNT(id) AS total FROM tickets WHERE crDate BETWEEN ? AND ? GROUP BY outletId) AS p2 ON p1.id = p2.outletId ORDER BY p2.total DESC',array($datefr00,$dateto00));
+			$ticket0 = $this->db->query('SELECT p1.outletId AS outletId , p1.error AS error, p2.name AS name, COUNT(p1.id) AS total FROM tickets AS p1 INNER JOIN config_machine_error AS p2 ON p1.error = p2.id WHERE p1.crDate BETWEEN ? AND ? GROUP BY p1.error,p1.outletId ORDER BY p1.outletId,total DESC;',array($datefr00,$dateto00));
+			$totalt0 = $this->db->query('SELECT p1.outletId AS id, COUNT(p1.id) AS total FROM tickets AS p1 INNER JOIN config_machine_error AS p2 ON p1.error = p2.id WHERE p1.crDate BETWEEN ? AND ? GROUP BY p1.outletId;',array($datefr00,$dateto00));
 			$this->db->trans_complete();
 			
 			$data['outlet0'] = $outlet0->result_array();
 			$data['ticket0'] = $ticket0->result_array();
 			$data['totalt0'] = $totalt0->result_array();
+			
+			$data['datefr00'] = $datefr00;
+			$data['dateto00'] = $dateto00;
 			
 			if($_POST['preview0'] == '1'){
 				$this->load->view('modules/html2pdf/outletreport', $data);
@@ -235,14 +248,14 @@ class Reportsdatarecords extends MY_Controller {
 			if(!empty($_POST['dateto00'])){ $dateto00 = strtotime(str_replace('/', '-',$_POST['dateto00']));}
 			
 			$this->db->trans_start();
-			$machi00 = $this->db->query('SELECT p1.id AS id,p1.name AS name FROM machines AS p1;');
-			$tickee0 = $this->db->query('SELECT p1.machId AS machId,p1.error AS error, p2.name AS errorName,COUNT(p1.error) AS total FROM tickets AS p1 INNER JOIN config_machine_error AS p2 ON p1.error = p2.id WHERE p1.crDate BETWEEN ? AND ? GROUP BY p1.error;',array($datefr00,$dateto00));
-			$totale0 = $this->db->query('SELECT p1.id AS id,COUNT(p2.id) AS total FROM machines AS p1 INNER JOIN tickets AS p2 ON p1.id = p2.machId WHERE p2.crDate BETWEEN ? AND ? GROUP BY p2.machId;',array($datefr00,$dateto00));
+			$outlet0 = $this->db->query('SELECT p1.id , p1.name, COALESCE(p2.total,0) AS total FROM outlets AS p1 LEFT JOIN (SELECT outletId, COUNT(id) AS total FROM tickets WHERE crDate BETWEEN ? AND ? GROUP BY outletId) AS p2 ON p1.id = p2.outletId ORDER BY p2.total DESC',array($datefr00,$dateto00));
+			$machi00 = $this->db->query('select p1.outletId AS outletId,p1.machId AS machId,p2.name AS name, p1.error AS error, p3.name AS errorname, COUNT(p1.id) AS total FROM tickets AS p1 INNER JOIN machines AS p2 ON p1.machId = p2.id INNER JOIN config_machine_error AS p3 ON p1.error = p3.id WHERE p1.crDate BETWEEN ? AND ? GROUP BY p1.error,p1.machId ORDER BY total DESC;',array($datefr00,$dateto00));
 			$this->db->trans_complete();
 			
+			$data['outlet0'] = $outlet0->result_array();
 			$data['machi00'] = $machi00->result_array();
-			$data['tickee0'] = $tickee0->result_array();
-			$data['totale0'] = $totale0->result_array();
+			$data['datefr00'] = $datefr00;
+			$data['dateto00'] = $dateto00;
 
 			if($_POST['preview0'] == '1'){
 				$this->load->view('modules/html2pdf/machinesreport', $data);
@@ -287,16 +300,17 @@ class Reportsdatarecords extends MY_Controller {
 			if(!empty($_POST['dateto00'])){ $dateto00 = strtotime(str_replace('/', '-',$_POST['dateto00']));}
 			
 			$this->db->trans_start();
-			$errors0 = $this->db->query('SELECT p1.id AS id,p1.name AS name FROM config_machine_error AS p1;');
-			$ticket0 = $this->db->query('SELECT p1.id AS id, p1.name AS errorName,COUNT(p1.id) AS total FROM config_machine_error AS p1 INNER JOIN tickets AS p2 ON p1.id = p2.error WHERE p2.crDate BETWEEN ? AND ? GROUP BY p1.id;',array($datefr00,$dateto00));
+			$errors0 = $this->db->query('SELECT p1.id, p1.name, coalesce(p2.total,0) AS total FROM config_machine_error AS p1 LEFT JOIN (SELECT error, count(id) AS total FROM tickets WHERE crDate BETWEEN ? AND ? GROUP BY error) AS p2 ON p1.id = p2.error ORDER BY total DESC;',array($datefr00,$dateto00));
 			$totale0 = $this->db->query('SELECT COUNT(p1.id) AS total FROM tickets AS p1 WHERE p1.crDate BETWEEN ? AND ?;',array($datefr00,$dateto00));
 			$this->db->trans_complete();
 			
 			$totale0 = $totale0->row();
 			
 			$data['errors0'] = $errors0->result_array();
-			$data['ticket0'] = $ticket0->result_array();
 			$data['totale0'] = $totale0->total;
+			
+			$data['datefr00'] = $datefr00;
+			$data['dateto00'] = $dateto00;
 			
 			if($_POST['preview0'] == '1'){
 				$this->load->view('modules/html2pdf/errorcodesreport', $data);

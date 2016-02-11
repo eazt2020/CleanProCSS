@@ -12,9 +12,14 @@
 <body>
 		<div class="panel-body p20" id="invoice-item">
 			<div class="row mb30">
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="pull-left">
 						<h1 class="lh10 mt10">ERROR CODES REPORT</h1>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pull-right">
+						<h5 class="lh10 mt10"><?php echo 'Report date from '.date("d/m/Y",$datefr00).' to '.date("d/m/Y",$dateto00);?></h5>
 					</div>
 				</div>
 			</div>
@@ -32,15 +37,7 @@
 						echo '<tr>';
 						echo '<td class="tg-ng14">'.$row01['id'].'</td>';
 						echo '<td class="tg-0bri">'.strtoupper($row01['name']).'</td>';
-						foreach ($ticket0 as $row02) {
-							if ($row01['id'] == $row02['id']) {
-								$calt02 = 1;
-								echo '<td class="tg-ng14">'.$row02['total'].'</td>';
-							}
-						}
-						if ($calt02 == 0) {
-							echo '<td class="tg-ng14">0</td>';
-						}
+						echo '<td class="tg-ng14">'.$row01['total'].'</td>';
 						echo '</tr>';
 					}?>
 					</table>

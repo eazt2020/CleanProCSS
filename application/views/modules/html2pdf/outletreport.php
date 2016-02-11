@@ -14,9 +14,14 @@
 <body>
 		<div class="panel-body p20" id="invoice-item">
 			<div class="row mb30">
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="pull-left">
 						<h1 class="lh10 mt10">OUTLET REPORT</h1>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pull-right">
+						<h5 class="lh10 mt10"><?php echo 'Report date from '.date("d/m/Y",$datefr00).' to '.date("d/m/Y",$dateto00);?></h5>
 					</div>
 				</div>
 			</div>
@@ -29,9 +34,9 @@
 						echo '<th class="tg-ng15" colspan="3">Outlet Name: '.strtoupper($row00['name']).'</th>';
 						echo '</tr>';
 						echo '<tr>';
-						echo '<th class="tg-ng14" width="100">Ticket ID<br></th>';
-						echo '<th class="tg-ng14">Customer Name<br></th>';
-						echo '<th class="tg-ng14" width="120px">Total Refund (RM)<br></th>';
+						echo '<th class="tg-ng14" width="100">Error ID<br></th>';
+						echo '<th class="tg-ng14">Error Details<br></th>';
+						echo '<th class="tg-ng14" width="120px">Occurrence<br></th>';
 						echo '</tr>';
 						$calt03 = 0;
 						$calt01 = 0;
@@ -39,9 +44,9 @@
 							$calt01++;
 							if ($row00['id'] == $row01['outletId']) {
 								echo '<tr>';
-								echo '<td class="tg-ng14">'.$row01['id'].'</td>';
+								echo '<td class="tg-ng14">'.$row01['error'].'</td>';
 								echo '<td class="tg-0bri">'.strtoupper($row01['name']).'</td>';
-								echo '<td class="tg-ng14">'.$row01['amount'].'</td>';
+								echo '<td class="tg-ng14">'.$row01['total'].'</td>';
 								echo '</tr>';
 								$calt03++;
 							}
@@ -51,7 +56,7 @@
 							if ($row00['id'] == $row02['id']) {
 								$calt02++;
 								echo '<tr>';
-								echo '<td class="tg-ng16" colspan="2" align="right">Total Refund: </td>';
+								echo '<td class="tg-ng16" colspan="2" align="right">Total Occurrence</td>';
 								echo '<td class="tg-ng14">'.$row02['total'].'</td>';
 								echo '</tr>';
 							}

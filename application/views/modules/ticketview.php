@@ -50,6 +50,8 @@
 											<th>Call Type</th>
 											<th>Error Code</th>
 											<th>Status</th>
+											<th>Issue Date</th>
+											<th>Issue By</th>
 											<th align="center" width="10px"><input name="checkAll" type="checkbox" class="textbox" id="checkAll" onClick="javascript:check_all('rmticket', this)" value="yes"></th>
 										</tr>
 									</thead>
@@ -63,6 +65,8 @@
 											echo '<td>'.strtoupper($row['callTypeName']).'</td>';
 											echo '<td>'.strtoupper($row['errorName']).'</td>';
 											echo '<td>'.strtoupper($row['statusName']).'</td>';
+											echo '<td>'.date('Y-m-d H:i:s',$row['crDate']).'</td>';
+											echo '<td>'.$row['userCr'].'</td>';
 											echo '<td align="center"><input name="checkList[]" type="checkbox" class="textbox" id="checkbox" value="'.$row['id'].'"></td>';
 											echo '</tr>';
 										}?>
@@ -119,15 +123,14 @@
 									</div>
 									<div class="col-md-6">
 										<div class="section">
-											<label for="error" class="field select">
-												<select name="error" id="error">
+											<label for="error" class="field">
+												<select name="error" id="error" class="select2-error">
 													<option value="default">Choose Error Code</option>
 													<?php $calt = 0; foreach($errorcode as $row) {
 														$calt++;
 														echo '<option value="'.$row['id'].'">#'.$row['id'].'| '.strtoupper($row['name']).'</option>';
 													}?>
 												</select>
-												<i class="arrow"></i>
 											</label>
 										</div>
 									</div>
@@ -286,6 +289,7 @@
 			$("#compId").select2({width: "100%"});
 			$("#outletId").select2({width: "100%"});
 			$("#machId").select2({width: "100%"});
+			$("#error").select2({width: "100%"});
 			
 			$("#outletId").change(function() {
 				$("#compId").load("<?php echo base_url('tickets/companydropdown'); ?>?choice=" + jQuery("#outletId").val(),function(){

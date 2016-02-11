@@ -47,11 +47,12 @@ class Machines extends MY_Controller {
 			$attr['sidebar0'] = $sidebar0->result_array();
 			$attr['breadcrb'] = '<li class="crumb-link"><a href="'.base_url('dashboard').'">Dashboard</a></li><li class="crumb-trail">Machines</li>';
 			
+			
 			$data['headervw'] = $this->load->view('templates/headerview',$attr, true);
 			$data['sidebrvw'] = $this->load->view('templates/sideview',$attr, true);
 			$data['contntvw'] = $this->load->view('modules/machineview',$attr, true);
 			
-			$this->load->view('parserview', $data);	
+			$this->load->view('parserview', $data);
 		}
 		else {
 			$errcode0 = '<div class="col-md-12"><div class="alert alert-success dark alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>You do not have enough privilege to view the screen</div></div>';
@@ -111,12 +112,7 @@ class Machines extends MY_Controller {
 			$query = $this->db->query('SELECT id FROM machines ORDER BY id DESC LIMIT 1');
 			$calt = $query->row();
 			
-			if(isset($_GET['id']) && $_GET['id'] !== 0){
-				$calt = $_GET['id'];
-			}
-			else {
-				$calt = 1 + $calt->id;
-			}
+			if(isset($_GET['id']) && $_GET['id'] !== 0){$calt = $_GET['id'];}else {$calt = 1 + $calt->id;}
 			
 			$ops = array(
 				'id'		=> $calt,

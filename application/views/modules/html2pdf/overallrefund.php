@@ -14,9 +14,14 @@
 <body>
 		<div class="panel-body p20" id="invoice-item">
 			<div class="row mb30">
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="pull-left">
 						<h1 class="lh10 mt10">OVERALL REFUND</h1>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pull-right">
+						<h5 class="lh10 mt10"><?php echo 'Report date from '.date("d/m/Y",$datefr00).' to '.date("d/m/Y",$dateto00);?></h5>
 					</div>
 				</div>
 			</div>
@@ -25,9 +30,9 @@
 					<table class="tg" width='100%'>
 						<tr>
 							<th class="tg-ng14" width='50px'>No.</th>
-							<th class="tg-ng14" width='100px'>Company ID</th>
+							<th class="tg-ng14" width='100px'>Outlet ID</th>
 							<th class="tg-ng14">Outlet Name<br></th>
-							<th class="tg-ng14" width='120px'>Total Refund (RM)<br></th>
+							<th class="tg-ng14" width='120px'>Sum Refunded (RM)<br></th>
 						</tr>
 						<?php $calt = 0; foreach($tickets as $row) {
 							$calt++;

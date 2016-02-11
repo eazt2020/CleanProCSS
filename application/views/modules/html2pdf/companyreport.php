@@ -14,9 +14,14 @@
 <body>
 		<div class="panel-body p20" id="invoice-item">
 			<div class="row mb30">
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="pull-left">
 						<h1 class="lh10 mt10">COMPANY REPORT</h1>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="pull-right">
+						<h5 class="lh10 mt10"><?php echo 'Report date from '.date("d/m/Y",$datefr00).' to '.date("d/m/Y",$dateto00);?></h5>
 					</div>
 				</div>
 			</div>
@@ -26,27 +31,34 @@
 						$calt00++;
 						echo '<table class="tg" width="100%">';
 						echo '<tr>';
-						echo '<th class="tg-ng15" colspan="2">Company Name: '.strtoupper($row00['name']).'</th>';
+						echo '<th class="tg-ng15" colspan="3">Company Name: '.strtoupper($row00['name']).'</th>';
 						echo '</tr>';
 						echo '<tr>';
+						echo '<th class="tg-ng15" width="130px">Outlet ID<br></th>';
 						echo '<th class="tg-ng15">Outlet Name<br></th>';
-						echo '<th class="tg-ng14" width="120px">Total Refund (RM)<br></th>';
+						echo '<th class="tg-ng14" width="130px">Sum Refunded (RM)<br></th>';
 						echo '</tr>';
-						
 						$calt01 = 0;
 						foreach($outlet0 as $row01) {
-							$calt01++;
 							if ($row00['id'] == $row01['compId']) {
+								$calt01++;
 								echo '<tr>';
+								echo '<td class="tg-ng14">'.$row01['id'].'</td>';
 								echo '<td class="tg-ng15">'.strtoupper($row01['name']).'</td>';
 								echo '<td class="tg-ng14">'.$row01['total'].'</td>';
 								echo '</tr>';
 							}
-							else {
-								echo '<tr>';
-								echo '<td class="tg-0bri" colspan="2">NO DATA AVAILABLE</td>';
-								echo '</tr>';
-							}
+						}
+						if ($calt01 > 0) {
+							echo '<tr>';
+							echo '<td class="tg-ng16" colspan="2" align="right">Total Refunded (RM):</td>';
+							echo '<td class="tg-ng14">'.$row00['total'].'</td>';
+							echo '</tr>';
+						}
+						if ($calt01 == 0){
+							echo '<tr>';
+							echo '<td class="tg-ng14" colspan="5">NO DATA AVAILABLE</td>';
+							echo '</tr>';
 						}
 						echo '</table>';
 						echo '<br>';
